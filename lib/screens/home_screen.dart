@@ -6,6 +6,7 @@ import 'scan_tab.dart';
 import 'projects_tab.dart';
 import 'rewards_tab.dart';
 import 'profile_tab.dart';
+import 'gemini_image_tasks_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,37 +19,27 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   final ImagePicker _picker = ImagePicker();
 
-  // Tabs list removed in favor of inline generation in build
-
-
   void _onTabTapped(int index) {
-    if (index == 1) {
-        // Special case for Scan if we want the FAB to invoke it, 
-        // or if tapping the placeholder tab item does something.
-        // For now, let's just show the ScanTab.
-    }
     setState(() {
       _currentIndex = index;
     });
   }
 
+  /// 🔥 FAB → Camera → Gemini
   Future<void> _pickImage() async {
     try {
-      final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-      if (image != null) {
-        // In a real app, we'd save this to local storage permanently.
-        // For now, updating the mock project directly to demonstrate functionality.
-        setState(() {
-          mockProjects[0].capturedImagePath = image.path;
-        });
-        
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Image captured and added to active project!'),
-            behavior: SnackBarBehavior.floating,
+      final XFile? image =
+      await _picker.pickImage(source: ImageSource.camera);
+      if (image == null) return;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => GeminiImageTasksScreen(
+            imagePath: image.path,
           ),
-        );
-      }
+        ),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -65,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: IndexedStack(
         index: _currentIndex,
         children: [
-          DashboardTab(), // Removed const to ensure rebuild when mockProjects updates
+          DashboardTab(),
           const ScanTab(),
           const ProjectsTab(),
           const RewardsTab(),
@@ -82,7 +73,6 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: _onTabTapped,
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
@@ -90,9 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.camera_alt_outlined, color: Colors.transparent), // Invisible icon behind FAB
+            icon:
+            Icon(Icons.camera_alt_outlined, color: Colors.transparent),
             label: 'Scan',
-            enabled: false, // Disable interaction as FAB covers it
+            enabled: false,
           ),
           NavigationDestination(
             icon: Icon(Icons.grid_view_outlined),

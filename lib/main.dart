@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
+import 'screens/gemini_image_tasks_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,10 +20,15 @@ class MyApp extends StatelessWidget {
           seedColor: Colors.teal,
           brightness: Brightness.light,
         ),
-        // Customizing card theme for consistent rounded corners
-        // cardTheme customization removed to ensure compatibility
       ),
-      home: const HomeScreen(),
+
+      // ✅ Named routes (clean & scalable)
+      routes: {
+        '/': (context) => const HomeScreen(),
+        '/gemini': (context) => const GeminiImageTasksScreen(),
+      },
+
+      initialRoute: '/',
     );
   }
 }

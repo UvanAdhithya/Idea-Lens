@@ -43,37 +43,46 @@ class RecommendedProjectCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      project.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      project.difficulty,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
-                    ),
-                    const SizedBox(height: 12),
-                    OutlinedButton(
-                      onPressed: onTap,
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 36),
+              // FIXED: Wrapped in Expanded to prevent overflow
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [  // ← Remove mainAxisSize: MainAxisSize.min
+                      Text(
+                        project.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                      child: const Text('Get Started'),
-                    ),
-                  ],
+                      const SizedBox(height: 4),
+                      Text(
+                        project.difficulty,
+                        maxLines: 1,  // ← ADD THIS
+                        overflow: TextOverflow.ellipsis,  // ← ADD THIS
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
+                      ),
+                      const Spacer(),
+                      SizedBox(  // ← Wrap button in SizedBox
+                        height: 32,
+                        child: OutlinedButton(
+                          onPressed: onTap,
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: Size(double.infinity, 32),
+                          ),
+                          child: const Text('Get Started'),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
+
             ],
           ),
         ),

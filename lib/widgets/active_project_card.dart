@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/project.dart';
 
@@ -22,19 +23,27 @@ class ActiveProjectCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Image Placeholder area since we don't have real assets
+            // Image Area
             Container(
               height: 140,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceVariant,
+                image: project.capturedImagePath != null
+                    ? DecorationImage(
+                        image: FileImage(File(project.capturedImagePath!)),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
               ),
-              child: Center(
-                child: Icon(
-                  Icons.image,
-                  size: 48,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
-              ),
+              child: project.capturedImagePath == null
+                  ? Center(
+                      child: Icon(
+                        Icons.image,
+                        size: 48,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    )
+                  : null, // Image is in decoration
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),

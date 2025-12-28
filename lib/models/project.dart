@@ -3,6 +3,7 @@ class Project {
   final String title;
   final String description;
   final String imageUrl;
+  String? capturedImagePath; // path to local file
   final String difficulty; // "Easy", "Medium", "Hard"
   final double progress; // 0.0 to 1.0
   final int points;
@@ -12,6 +13,7 @@ class Project {
     required this.title,
     required this.description,
     required this.imageUrl,
+    this.capturedImagePath,
     required this.difficulty,
     required this.progress,
     required this.points,

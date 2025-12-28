@@ -1,0 +1,68 @@
+################################
+# 🔐 SECRETS (NEVER COMMIT)
+################################
+.env
+*.env
+firebase-key.json
+backend/firebase-key.json
+
+################################
+# 🐍 BACKEND (Python / FastAPI)
+################################
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Python tooling
+.pytest_cache/
+.mypy_cache/
+
+################################
+# 📱 FRONTEND (Flutter / Dart)
+################################
+# Dart / Flutter cache
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+
+# Build outputs
+build/
+coverage/
+
+# Flutter iOS
+**/ios/Flutter/.last_build_id
+**/ios/Pods/
+**/ios/Runner.xcworkspace/
+
+# Flutter Android
+**/android/.gradle/
+**/android/app/build/
+
+################################
+# 🖥️ IDEs & OS
+################################
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+################################
+# 🧪 Logs / temp files
+################################
+*.log
+*.swp
+*.tmp
+*.cache

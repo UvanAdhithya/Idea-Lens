@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
           seedColor: Colors.teal,
           brightness: Brightness.light,
         ),
+
       ),
 
       // ✅ Named routes (clean & scalable)

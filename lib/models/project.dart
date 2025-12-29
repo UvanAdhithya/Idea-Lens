@@ -1,52 +1,53 @@
 class Project {
-  final String id;
   final String title;
+  final String difficulty;
   final String description;
-  final String imageUrl;
-  String? capturedImagePath; // path to local file
-  final String difficulty; // "Easy", "Medium", "Hard"
-  final double progress; // 0.0 to 1.0
-  final int points;
+  final List<String> steps;
+  final String? capturedImagePath;
+  final double progress;
 
-  Project({
-    required this.id,
+  const Project({
     required this.title,
-    required this.description,
-    required this.imageUrl,
-    this.capturedImagePath,
     required this.difficulty,
-    required this.progress,
-    required this.points,
+    required this.description,
+    required this.steps,
+    this.capturedImagePath,
+    this.progress = 0.0,
   });
-}
 
-// Mock Data
-final List<Project> mockProjects = [
-  Project(
-    id: '1',
-    title: 'DIY Smart Lamp',
-    description: 'Build a voice-controlled lamp using Arduino.',
-    imageUrl: 'assets/lamp.png', // Placeholder
-    difficulty: 'Medium',
-    progress: 0.65,
-    points: 500,
-  ),
-  Project(
-    id: '2',
-    title: 'Eco-Friendly Planter',
-    description: 'Create a self-watering planter from recycled bottles.',
-    imageUrl: 'assets/planter.png', // Placeholder
-    difficulty: 'Easy',
-    progress: 0.0,
-    points: 300,
-  ),
-  Project(
-    id: '3',
-    title: 'Robotic Arm',
-    description: '3D print and assemble a simple robotic arm.',
-    imageUrl: 'assets/robot.png', // Placeholder
-    difficulty: 'Hard',
-    progress: 0.0,
-    points: 1000,
-  ),
-];
+  factory Project.fromJson(Map<String, dynamic> json) {
+    return Project(
+      title: json['title'] ?? 'Untitled',
+      difficulty: json['difficulty'] ?? 'Unknown',
+      description: json['description'] ?? 'No description.',
+      steps: List<String>.from(json['steps'] ?? []),
+    );
+  }
+
+  static final List<Project> mockProjects = [
+    Project(
+      title: 'DIY Bookshelf',
+      difficulty: 'Medium',
+      description: 'A simple bookshelf from recycled wood.',
+      steps: ['Cut wood', 'Sand edges', 'Assemble shelf', 'Paint or stain', 'Mount on wall'],
+      capturedImagePath: null, 
+      progress: 0.75,
+    ),
+    Project(
+      title: 'Bottle Planter',
+      difficulty: 'Easy',
+      description: 'A cute planter from a plastic bottle.',
+      steps: ['Cut bottle', 'Decorate', 'Add soil', 'Plant seedling', 'Water'],
+      capturedImagePath: null,
+      progress: 0.2,
+    ),
+    Project(
+      title: 'Advanced Robotic Arm',
+      difficulty: 'Hard',
+      description: 'A functional robotic arm with Arduino.',
+      steps: ['3D print parts', 'Assemble mechanics', 'Wire electronics', 'Program Arduino', 'Test and calibrate'],
+      capturedImagePath: null,
+      progress: 0.0,
+    ),
+  ];
+}

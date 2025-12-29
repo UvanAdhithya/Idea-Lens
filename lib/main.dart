@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/gemini_image_tasks_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'screens/projects_list_screen.dart';
+import 'screens/project_details_screen.dart';
+import 'models/project.dart';
 
 
 Future<void> main() async {

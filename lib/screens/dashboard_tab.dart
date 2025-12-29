@@ -3,13 +3,16 @@ import '../models/project.dart';
 import '../widgets/active_project_card.dart';
 import '../widgets/recommended_project_card.dart';
 import '../widgets/gamification_card.dart';
-import 'project_detail_screen.dart';
+import 'project_details_screen.dart';
 
 class DashboardTab extends StatelessWidget {
-  const DashboardTab({super.key});
+   DashboardTab({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Define mockProjects as a local variable within the build method
+    final List<Project> mockProjects = Project.mockProjects;
+
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -30,13 +33,13 @@ class DashboardTab extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                 child: ActiveProjectCard(
-                  project: mockProjects[0],
+                  project: mockProjects[0], // Use the local variable
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProjectDetailScreen(
-                          project: mockProjects[0],
+                        builder: (context) => ProjectDetailsScreen(
+                          project: mockProjects[0], // Use the local variable
                         ),
                       ),
                     );
@@ -59,23 +62,13 @@ class DashboardTab extends StatelessWidget {
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   scrollDirection: Axis.horizontal,
-                  itemCount: mockProjects.length,
+                  itemCount: mockProjects.length, // Use the local variable
                   separatorBuilder: (context, index) => const SizedBox(width: 12),
                   itemBuilder: (context, index) {
                     // Skip the first one if we consider it "active"
                     if (index == 0) return const SizedBox.shrink();
                     return RecommendedProjectCard(
-                      project: mockProjects[index],
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProjectDetailScreen(
-                              project: mockProjects[index],
-                            ),
-                          ),
-                        );
-                      },
+                      project: mockProjects[index], // Use the local variable
                     );
                   },
                 ),

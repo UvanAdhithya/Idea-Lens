@@ -1,0 +1,32 @@
+V2. Analysis Button Behavior
+-After the scan completes,  “Analyze” button should be there instead of existing button
+-On click:
+    Navigate to a new page (do NOT replace content on the same page).
+**USING OUTPUT JSON FROM GEMINI**
+3. Projects Listing Page
+-Display the 3 projects as stacked widgets/cards, ordered:
+    Easy
+    Medium
+    Hard
+-Each widget should show:
+    Project title
+    Difficulty badge (color-coded)
+    Short description
+-UI must be mobile-first, clean spacing, large tap targets.
+
+4. Project Details Page
+-Clicking a project widget opens a new page.
+-Display the 5 steps clearly using:
+-Numbered step cards or timeline UI
+-Clear hierarchy (step number → step text)
+-Ensure smooth navigation (back button support).
+
+5. UI & UX Constraints
+-Mobile-first layout (no desktop-only assumptions).
+-Minimalist design, no clutter.
+-Fast transitions, clear visual hierarchy.
+
+6. Technical Notes
+-Keep data flow clean between pages.
+-Assume JSON from Gemini is the single source of truth.
+-Do not invent extra projects or steps beyond the JSON.

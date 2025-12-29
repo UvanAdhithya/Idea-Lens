@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import '../services/gemini_vision_service.dart';  // ← ADD THIS LINE
-
+import '../models/project.dart';
+import '../services/gemini_vision_service.dart';
+import 'projects_list_screen.dart';
 
 class GeminiImageTasksScreen extends StatefulWidget {
   final String? imagePath;
@@ -13,6 +14,54 @@ class GeminiImageTasksScreen extends StatefulWidget {
 }
 
 class _GeminiImageTasksScreenState extends State<GeminiImageTasksScreen> {
+  bool _isLoading = false;
+  Map<String, dynamic>? _analysisResult;
+  String? _errorMessage;
+
+  Future<void> _analyzeImage() async {
+    if (widget.imagePath == null) return;
+
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final imageFile = File(widget.imagePath!);
+      final result = await GeminiVisionService.analyzeImage(imageFile);
+      setState(() {
+        if (result.containsKey('error')) {
+          _errorMessage = result['error'];
+        } else {
+          _analysisResult = result;
+        }
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'An unexpected error occurred: $e';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _navigateToProjects() {
+    if (_analysisResult == null) return;
+
+    final List<Project> projects = (_analysisResult!['projects'] as List)
+        .map((data) => Project.fromJson(data))
+        .toList();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProjectsListScreen(projects: projects),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,65 +69,48 @@ class _GeminiImageTasksScreenState extends State<GeminiImageTasksScreen> {
         title: const Text('Analyze Image'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // ← ADD TEST BUTTON HERE
-            ElevatedButton(
-              onPressed: () async {
-                print('🚀 TESTING GEMINI...');
-                try {
-                  // Use your actual image if available, or test image
-                  final imageFile = widget.imagePath != null
-                      ? File(widget.imagePath!)
-                      : File('D:/Programming/gdg_hack/test.jpg'); // ← Add test.jpg to project root
-
-                  print('📁 Using image: ${imageFile.path}');
-                  final result = await GeminiVisionService.analyzeImage(imageFile);
-                  print('✅ FULL RESULT: $result');
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Result: ${result.toString()}')),
-                  );
-                } catch (e) {
-                  print('❌ ERROR: $e');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error: $e')),
-                  );
-                }
-              },
-              child: const Text('🧪 Test Gemini API'),
-            ),
-
-            const SizedBox(height: 20),
-
-            if (widget.imagePath != null)
-              Expanded(
-                child: Padding(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (widget.imagePath != null)
+                Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: Image.file(
                       File(widget.imagePath!),
                       fit: BoxFit.contain,
+                      height: MediaQuery.of(context).size.height * 0.4,
                     ),
                   ),
+                )
+              else
+                const Icon(Icons.image_not_supported, size: 100, color: Colors.grey),
+              const SizedBox(height: 20),
+              if (_isLoading)
+                const CircularProgressIndicator()
+              else if (_errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Error: $_errorMessage',
+                    style: const TextStyle(color: Colors.red),
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              else if (_analysisResult == null)
+                ElevatedButton(
+                  onPressed: _analyzeImage,
+                  child: const Text('Analyze'),
+                )
+              else
+                ElevatedButton(
+                  onPressed: _navigateToProjects,
+                  child: const Text('View Projects'),
                 ),
-              )
-            else
-              const Icon(Icons.image_not_supported, size: 100, color: Colors.grey),
-
-            const SizedBox(height: 20),
-
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: const Text(
-                'Gemini Analysis Result will appear here.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

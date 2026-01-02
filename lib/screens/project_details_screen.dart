@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/project.dart';
 import '../services/history_service.dart';
 import '../screens/home_screen.dart'; // adjust path if needed
+import '../services/reward_service.dart';
+
 
 class ProjectDetailsScreen extends StatefulWidget {
   final Project project;
@@ -40,7 +42,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         selectedProject: widget.project.title,
         difficulty: widget.project.difficulty,
       );
-
+      await RewardService.addPoints(widget.project.difficulty);
       if (!mounted) return;
 
       // 2️⃣ Navigate to your home screen

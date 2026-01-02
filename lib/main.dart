@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'services/reward_service.dart';
 
 import 'screens/home_screen.dart';
 import 'models/project_history.dart';
@@ -10,6 +11,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await Hive.initFlutter();
+  await RewardService.init();
+
 
   Hive.registerAdapter(ProjectHistoryAdapter());
   await Hive.openBox<ProjectHistory>('historyBox');

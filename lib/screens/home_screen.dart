@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../models/project.dart';
-import 'dashboard_tab.dart';
+
 import 'scan_tab.dart';
 import 'projects_tab.dart';
 import 'rewards_tab.dart';
@@ -32,6 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
       await _picker.pickImage(source: ImageSource.camera);
       if (image == null) return;
 
+      if (!mounted) return;
+
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -41,6 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     } catch (e) {
+      if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error capturing image: $e'),
@@ -55,12 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: [
-          DashboardTab(),
-          const ScanTab(),
-          const ProjectsTab(),
-          const RewardsTab(),
-          const ProfileTab(),
+        children: const [
+          ScanTab(),      // Home tab
+          ScanTab(),      // Center FAB placeholder
+          ProjectsTab(),
+          RewardsTab(),
+          ProfileTab(),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -69,7 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 4,
         child: const Icon(Icons.camera_alt),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation:
+      FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: _onTabTapped,

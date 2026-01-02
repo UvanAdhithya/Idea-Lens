@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../screens/history_screen.dart';
+
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
@@ -33,7 +35,14 @@ class ProfileTab extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.history),
             title: const Text('History'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const HistoryScreen(),
+                ),
+              );
+            },
           ),
           ListTile(
             leading: const Icon(Icons.verified),

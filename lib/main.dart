@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
-import 'screens/gemini_image_tasks_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'screens/projects_list_screen.dart';
-import 'screens/project_details_screen.dart';
-import 'models/project.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+import 'screens/home_screen.dart';
+import 'models/project_history.dart';
+import 'models/project_history_adapter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(ProjectHistoryAdapter());
+  await Hive.openBox<ProjectHistory>('historyBox');
+
   runApp(const MyApp());
 }
 
@@ -27,13 +31,11 @@ class MyApp extends StatelessWidget {
           seedColor: Colors.teal,
           brightness: Brightness.light,
         ),
-
       ),
 
-      // ✅ Named routes (clean & scalable)
+      // ✅ ONLY HomeScreen is a named route
       routes: {
         '/': (context) => const HomeScreen(),
-        '/gemini': (context) => const GeminiImageTasksScreen(),
       },
 
       initialRoute: '/',

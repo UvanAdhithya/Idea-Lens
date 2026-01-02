@@ -4,8 +4,15 @@ import '../screens/project_details_screen.dart';
 
 class RecommendedProjectCard extends StatelessWidget {
   final Project project;
+  final String imagePath;
+  final List<String> detectedObjects;
 
-  const RecommendedProjectCard({super.key, required this.project});
+  const RecommendedProjectCard({
+    super.key,
+    required this.project,
+    required this.imagePath,
+    required this.detectedObjects,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +23,12 @@ class RecommendedProjectCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ProjectDetailsScreen(project: project),
+              builder: (context) => ProjectDetailsScreen(
+                project: project,
+                imagePath: imagePath,
+                detectedObjects: detectedObjects,
+
+              ),
             ),
           );
         },

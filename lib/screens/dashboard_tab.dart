@@ -4,9 +4,17 @@ import '../widgets/active_project_card.dart';
 import '../widgets/recommended_project_card.dart';
 import '../widgets/gamification_card.dart';
 import 'project_details_screen.dart';
+import '../models/project_session.dart';
 
 class DashboardTab extends StatelessWidget {
-   DashboardTab({super.key});
+  final ProjectSession session;
+  final List<Project> projects;
+
+  const DashboardTab({
+    super.key,
+    required this.session,
+    required this.projects,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +47,9 @@ class DashboardTab extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProjectDetailsScreen(
-                          project: mockProjects[0], // Use the local variable
+                            project: mockProjects[0],
+                            imagePath: session.imagePath,
+                            detectedObjects: session.detectedObjects,
                         ),
                       ),
                     );
@@ -68,7 +78,9 @@ class DashboardTab extends StatelessWidget {
                     // Skip the first one if we consider it "active"
                     if (index == 0) return const SizedBox.shrink();
                     return RecommendedProjectCard(
-                      project: mockProjects[index], // Use the local variable
+                      project: mockProjects[index],
+                      imagePath: session.imagePath,
+                      detectedObjects: session.detectedObjects,// Use the local variable
                     );
                   },
                 ),

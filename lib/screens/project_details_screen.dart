@@ -1,28 +1,57 @@
 import 'package:flutter/material.dart';
 import '../models/project.dart';
+import '../services/history_service.dart';
+import '../screens/home_screen.dart'; // adjust path if needed
 
 class ProjectDetailsScreen extends StatefulWidget {
   final Project project;
+  final String imagePath;
+  final List<String> detectedObjects;
 
-  const ProjectDetailsScreen({super.key, required this.project});
+  const ProjectDetailsScreen({
+    super.key,
+    required this.project,
+    required this.imagePath,
+    required this.detectedObjects,
+  });
 
   @override
-  State<ProjectDetailsScreen> createState() => _ProjectDetailsScreenState();
+  State<ProjectDetailsScreen> createState() =>
+      _ProjectDetailsScreenState();
 }
+
 
 class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   int _currentStepIndex = 0;
 
-  void _handleNextStep() {
-    if (_currentStepIndex < widget.project.steps.length - 1) {
+  void _handleNextStep() async {
+    final bool isLastStep =
+        _currentStepIndex == widget.project.steps.length - 1;
+
+    if (!isLastStep) {
       setState(() {
         _currentStepIndex++;
       });
     } else {
-      // Last step, navigate back
-      Navigator.pop(context);
+      // 1️⃣ Save completed project to history
+      await HistoryService.saveCompletedProject(
+        imagePath: widget.imagePath,
+        detectedObjects: widget.detectedObjects,
+        selectedProject: widget.project.title,
+        difficulty: widget.project.difficulty,
+      );
+
+      if (!mounted) return;
+
+      // 2️⃣ Navigate to your home screen
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+            (route) => false,
+      );
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {

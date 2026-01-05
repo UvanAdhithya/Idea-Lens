@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+
+import 'scan_tab.dart';
+import 'projects_tab.dart';
+import '../models/recommended_projects_page.dart';
 import '../models/project.dart';
-import '../widgets/active_project_card.dart';
-import '../widgets/recommended_project_card.dart';
-import '../widgets/gamification_card.dart';
-import 'project_details_screen.dart';
 import '../models/project_session.dart';
 
 class DashboardTab extends StatelessWidget {
-  final ProjectSession session;
+  final ProjectSession? session;
   final List<Project> projects;
 
   const DashboardTab({
@@ -18,92 +18,172 @@ class DashboardTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Define mockProjects as a local variable within the build method
-    final List<Project> mockProjects = Project.mockProjects;
+    return Scaffold(
+      backgroundColor: const Color(0xFFF6FBFF),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+          child: Column(
+            children: [
 
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          floating: true,
-          snap: true,
-          title: const Text('Scan Your Materials'),
-          centerTitle: false,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.notifications_outlined),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        SliverList(
-          delegate: SliverChildListDelegate(
-            [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                child: ActiveProjectCard(
-                  project: mockProjects[0], // Use the local variable
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProjectDetailsScreen(
-                            project: mockProjects[0],
-                            imagePath: session.imagePath,
-                            detectedObjects: session.detectedObjects,
+              /// ───────── Scan Card ─────────
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                child: Column(
+                  children: [
+
+                    /// Tap to Scan (PRIMARY ACTION)
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const ScanTab()),
+                        );
+                      },
+                      child: Container(
+                        height: 210,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF9EC3FF),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            const Icon(
+                              Icons.qr_code_2,
+                              size: 140,
+                              color: Colors.white,
+                            ),
+                            const Text(
+                              'Tap to Scan',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  'Recommended Projects',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+                    ),
+
+                    const SizedBox(height: 14),
+
+                    /// Upload Image (NO ACTION)
+                    Container(
+                      height: 44,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF0F0F0),
+                        borderRadius: BorderRadius.circular(22),
                       ),
+                      child: const Text(
+                        'Upload Image',
+                        style: TextStyle(
+                          color: Color(0xFF6B7280),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    const Text(
+                      'Lorem ipsum dolor elit, sed do eiusmod tempor',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFF1F2A44),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 12),
-              SizedBox(
-                height: 220, // Height for card + padding
-                child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: mockProjects.length, // Use the local variable
-                  separatorBuilder: (context, index) => const SizedBox(width: 12),
-                  itemBuilder: (context, index) {
-                    // Skip the first one if we consider it "active"
-                    if (index == 0) return const SizedBox.shrink();
-                    return RecommendedProjectCard(
-                      project: mockProjects[index],
-                      imagePath: session.imagePath,
-                      detectedObjects: session.detectedObjects,// Use the local variable
-                    );
-                  },
-                ),
+
+              const SizedBox(height: 26),
+
+              /// ───────── All Projects ─────────
+              _BigActionTile(
+                title: 'All Projects',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ProjectsTab()),
+                  );
+                },
               ),
-              const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: GamificationCard(
-                  points: 1250,
-                  progressToNextLevel: 0.7,
-                  onTap: () {
-                    // Navigate to Rewards Tab (handled by parent specific switching usually, keeps simplistic here)
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Go to Rewards tab for more details!')),
-                    );
-                  },
-                ),
+
+              const SizedBox(height: 18),
+
+              /// ───────── Recommended Projects ─────────
+              _BigActionTile(
+                title: 'Recommended projects',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const RecommendedProjectsPage(),
+                    ),
+                  );
+                },
               ),
-              const SizedBox(height: 80), // Bottom padding for FAB and Nav Bar
             ],
           ),
         ),
-      ],
+      ),
+    );
+  }
+}
+
+/// ───────── Decorative Action Tile ─────────
+class _BigActionTile extends StatelessWidget {
+  final String title;
+  final VoidCallback onTap;
+
+  const _BigActionTile({
+    required this.title,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(28),
+        child: Container(
+          height: 92,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            gradient: LinearGradient(
+              colors: [
+                const Color(0xFF7EA6FF).withOpacity(0.5),
+                const Color(0xFF5DADE2).withOpacity(0.4),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 22),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

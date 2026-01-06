@@ -7,14 +7,14 @@ import '../services/reward_service.dart';
 
 class ProjectDetailsScreen extends StatefulWidget {
   final Project project;
-  final String imagePath;
-  final List<String> detectedObjects;
+  final String? imagePath;
+  final List<String>? detectedObjects;
 
   const ProjectDetailsScreen({
     super.key,
     required this.project,
-    required this.imagePath,
-    required this.detectedObjects,
+    this.imagePath,
+    this.detectedObjects,
   });
 
   @override

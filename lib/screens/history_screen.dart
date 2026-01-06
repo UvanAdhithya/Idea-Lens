@@ -19,7 +19,27 @@ class HistoryScreen extends StatelessWidget {
       body: ValueListenableBuilder(
         valueListenable: box.listenable(),
         builder: (context, Box<ProjectHistory> box, _) {
-          if (box.isEmpty) {
+          List<ProjectHistory> historyList = [];
+          try {
+            historyList = box.values.toList().reversed.toList();
+          } catch (e) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, color: Colors.red, size: 48),
+                  const SizedBox(height: 16),
+                  const Text('Error loading history.'),
+                  TextButton(
+                    onPressed: () => box.clear(),
+                    child: const Text('Clear History'),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          if (historyList.isEmpty) {
             return const Center(
               child: Text(
                 'No projects yet',
@@ -27,9 +47,6 @@ class HistoryScreen extends StatelessWidget {
               ),
             );
           }
-
-          final historyList =
-          box.values.toList().reversed.toList();
 
           return ListView.builder(
             itemCount: historyList.length,
@@ -40,12 +57,19 @@ class HistoryScreen extends StatelessWidget {
                 margin:
                 const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 child: ListTile(
-                  leading: Image.file(
-                    File(item.imagePath),
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  ),
+                  leading: item.imagePath != null
+                      ? Image.file(
+                          File(item.imagePath!),
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        )
+                      : Container(
+                          width: 50,
+                          height: 50,
+                          color: Theme.of(context).colorScheme.surfaceVariant,
+                          child: const Icon(Icons.history),
+                        ),
                   title: Text(item.selectedProject),
                   subtitle: Text(
                     '${item.difficulty.toUpperCase()} • '

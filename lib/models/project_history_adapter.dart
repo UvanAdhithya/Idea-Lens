@@ -3,28 +3,42 @@ import 'project_history.dart';
 
 class ProjectHistoryAdapter extends TypeAdapter<ProjectHistory> {
   @override
-  final int typeId = 0;
+  final int typeId = 10; // Increased TypeID
 
   @override
   ProjectHistory read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+
     return ProjectHistory(
-      imagePath: reader.readString(),
-      detectedObjects: reader.readList().cast<String>(),
-      selectedProject: reader.readString(),
-      difficulty: reader.readString(),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(
-        reader.readInt(),
-      ),
+      imagePath: fields[0] as String?,
+      detectedObjects: (fields[1] as List?)?.cast<String>(),
+      selectedProject: (fields[2] as String?) ?? 'Unknown',
+      difficulty: (fields[3] as String?) ?? 'Unknown',
+      createdAt: (fields[4] as DateTime?) ?? DateTime.now(),
     );
   }
 
   @override
   void write(BinaryWriter writer, ProjectHistory obj) {
-    writer.writeString(obj.imagePath);
-    writer.writeList(obj.detectedObjects);
-    writer.writeString(obj.selectedProject);
-    writer.writeString(obj.difficulty);
-    writer.writeInt(obj.createdAt.millisecondsSinceEpoch);
+    writer.writeByte(5); // Number of fields
+    
+    writer.writeByte(0);
+    writer.write(obj.imagePath);
+    
+    writer.writeByte(1);
+    writer.write(obj.detectedObjects);
+    
+    writer.writeByte(2);
+    writer.write(obj.selectedProject);
+    
+    writer.writeByte(3);
+    writer.write(obj.difficulty);
+    
+    writer.writeByte(4);
+    writer.write(obj.createdAt); // Hive handles DateTime directly
   }
 }
 

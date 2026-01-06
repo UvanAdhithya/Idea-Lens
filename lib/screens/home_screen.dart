@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'dashboard_tab.dart';
 import 'scan_tab.dart';
 import 'projects_tab.dart';
 import 'rewards_tab.dart';
@@ -24,11 +25,42 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  /// 🔥 FAB → Camera → Gemini
-  Future<void> _pickImage() async {
+  /// 🔥 Show choices for Camera or Gallery
+  void _showImageSourceActionSheet() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Take Photo'),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImage(ImageSource.camera);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Choose from Gallery'),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImage(ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 🔥 FAB → Selection → Gemini
+  Future<void> _pickImage(ImageSource source) async {
     try {
-      final XFile? image =
-      await _picker.pickImage(source: ImageSource.camera);
+      final XFile? image = await _picker.pickImage(source: source);
       if (image == null) return;
 
       if (!mounted) return;
@@ -46,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error capturing image: $e'),
+          content: Text('Error selecting image: $e'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -58,22 +90,22 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: const [
-          ScanTab(),      // Home tab
-          ScanTab(),      // Center FAB placeholder
-          ProjectsTab(),
-          RewardsTab(),
-          ProfileTab(),
+        children: [
+          DashboardTab(
+            onNavigateToRewards: () => _onTabTapped(2), // Rewards is at index 2
+          ),
+          const ProjectsTab(),
+          const RewardsTab(),
+          const ProfileTab(),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _pickImage,
+        onPressed: _showImageSourceActionSheet,
         shape: const CircleBorder(),
         elevation: 4,
         child: const Icon(Icons.camera_alt),
       ),
-      floatingActionButtonLocation:
-      FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: _onTabTapped,
@@ -82,12 +114,6 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home),
             label: 'Home',
-          ),
-          NavigationDestination(
-            icon:
-            Icon(Icons.camera_alt_outlined, color: Colors.transparent),
-            label: 'Scan',
-            enabled: false,
           ),
           NavigationDestination(
             icon: Icon(Icons.grid_view_outlined),

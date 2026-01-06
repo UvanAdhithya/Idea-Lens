@@ -44,12 +44,22 @@ class GeminiVisionService {
     String text = decoded["candidates"][0]["content"]["parts"][0]["text"];
 
     // ✅ ROBUST JSON CLEANER
-    // Finds the first '{' and the last '}' to extract the valid JSON object
-    final int startIndex = text.indexOf('{');
-    final int endIndex = text.lastIndexOf('}');
+    // Handle markdown code blocks if present
+    if (text.contains('```')) {
+      final startIndex = text.indexOf('{');
+      final endIndex = text.lastIndexOf('}');
+      if (startIndex != -1 && endIndex != -1) {
+        text = text.substring(startIndex, endIndex + 1);
+      }
+    }
     
-    if (startIndex != -1 && endIndex != -1) {
-      text = text.substring(startIndex, endIndex + 1);
+    // Fallback search for first { and last } if still looks complex
+    if (!text.trim().startsWith('{')) {
+      final startIndex = text.indexOf('{');
+      final endIndex = text.lastIndexOf('}');
+      if (startIndex != -1 && endIndex != -1) {
+        text = text.substring(startIndex, endIndex + 1);
+      }
     }
 
     try {

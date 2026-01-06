@@ -6,8 +6,19 @@ class RewardService {
 
   /// Initialize reward storage (call once in main)
   static Future<void> init() async {
-    final box = await Hive.openBox(boxName);
-    if (!box.containsKey(pointsKey)) {
+    try {
+      final box = await Hive.openBox(boxName);
+      if (!box.containsKey(pointsKey)) {
+        await box.put(pointsKey, 0);
+      }
+    } catch (e) {
+      print('⚠️ Error opening $boxName: $e. Attempting reset...');
+      try {
+        await Hive.deleteBoxFromDisk(boxName);
+      } catch (deleteError) {
+        print('ℹ️ Note: Could not delete $boxName files: $deleteError');
+      }
+      final box = await Hive.openBox(boxName);
       await box.put(pointsKey, 0);
     }
   }

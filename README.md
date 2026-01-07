@@ -109,12 +109,14 @@ flutter pub get
 ```
 
 ### Create .env file
+```bash
 # Google Gemini API Key (get from https://aistudio.google.com/app/apikey)
 GEMINI_API_KEY=your_gemini_api_key_here
 
 # Backend/API Base URL
 BASE_URL=http://localhost:3000
 # Production: BASE_URL=https://your-api-domain.com
+```
 
 ### Run the app
 ```bash

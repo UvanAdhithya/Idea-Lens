@@ -92,7 +92,7 @@ Many learners:
 - Android Emulator or physical device
 - Internet connection (for AI calls)
 
-### Verify setup:
+ Verify setup:
 ```bash
 flutter doctor
 ```
@@ -102,3 +102,21 @@ flutter doctor
 ```bash
 git clone https://github.com/UvanAdhithya/Idea-Lens.git
 cd Idea-Lens
+```
+### 2.Install Dependencies
+```bash
+flutter pub get
+```
+
+### Create .env file
+# Google Gemini API Key (get from https://aistudio.google.com/app/apikey)
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Backend/API Base URL
+BASE_URL=http://localhost:3000
+# Production: BASE_URL=https://your-api-domain.com
+
+### Run the app
+```bash
+flutter run
+```

@@ -5,7 +5,7 @@ Users scan materials around them, and the app intelligently suggests step-by-ste
 
 ---
 
-## 🚀 What Problem Does Idea Lens Solve?
+## What Problem Does Idea Lens Solve?
 
 Many learners:
 - Don’t know **what to build** with the materials they already have
@@ -20,7 +20,7 @@ Many learners:
 
 ---
 
-## 🧠 Core Idea (In One Line)
+## Core Idea (In One Line)
 
 > **Scan → Get Ideas → Build Step-by-Step → Learn by Doing**
 
@@ -84,9 +84,9 @@ Many learners:
 
 ---
 
-## ▶️ How to Run the App
+## How to Run the App
 
-### 1️⃣ Prerequisites
+### Prerequisites
 - Flutter SDK (latest stable)
 - Android Studio or VS Code
 - Android Emulator or physical device
@@ -122,3 +122,32 @@ BASE_URL=http://localhost:3000
 ```bash
 flutter run
 ```
+
+##  Demo Flow 
+
+1. Open the app  
+2. Tap **Scan**  
+3. Capture an image of nearby objects  
+4. View AI-generated project suggestions  
+5. Start a project  
+6. Exit mid-way  
+7. Resume the project later from the Home screen  
+
+---
+
+## 🏆 Why Idea Lens Stands Out
+
+- Combines **computer vision + learning**
+- Encourages **hands-on, real-world creativity**
+- Strong UX decisions (resume later, clean navigation)
+- Scalable for education, makers, and self-learning
+
+---
+
+## 🔮 Future Enhancements
+
+- Step validation using camera feedback
+- Offline project mode
+- Teacher / parent dashboard
+- Skill-based learning analytics
+- Community project sharing

@@ -62,5 +62,43 @@ Many learners:
 
 ---
 
-## 🏗️ App Structure (High Level)
+## 🧭 Navigation Philosophy
 
+- **Android back button** → exits project and saves progress
+- **Next / Previous buttons** → navigate steps
+- Project steps are **state-based**, not route-based
+- Prevents users from getting stuck inside projects
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|------|------------|
+| Frontend | Flutter (Material 3) |
+| AI | Google Gemini API (Vision + Text) |
+| Camera | Flutter Camera / Image Picker |
+| Backend | Firebase (Firestore) |
+| State | Local state + persisted progress |
+| Platform | Android (iOS-ready) |
+
+---
+
+## ▶️ How to Run the App
+
+### 1️⃣ Prerequisites
+- Flutter SDK (latest stable)
+- Android Studio or VS Code
+- Android Emulator or physical device
+- Internet connection (for AI calls)
+
+### Verify setup:
+```bash
+flutter doctor
+```
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/UvanAdhithya/Idea-Lens.git
+cd Idea-Lens

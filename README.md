@@ -1,42 +1,66 @@
-# Idea Lens
+#  Idea Lens
 
-Idea Lens is a Flutter‑powered AI dashboard that helps you generate, refine, and manage ideas using Google Gemini, with features like photo compression and a reward system.
+**Idea Lens** is an AI-powered mobile learning app that helps users turn **everyday objects into creative DIY projects** using their phone camera.  
+Users scan materials around them, and the app intelligently suggests step-by-step projects they can build, learn from, and resume anytime.
 
-## ✨ Features
+---
 
-- AI‑powered idea generation & refinement via Google Gemini API
-- Photo compression utility (`feature/photo-compressor`)
-- Reward/gamification system (`feature/reward-system`)
-- Multi‑version dashboards (`dashboard-v3`, `legacy-dashboard`)
-- Native mobile/web Flutter app
+## 🚀 What Problem Does Idea Lens Solve?
 
-## 🛠️ Tech Stack
+Many learners:
+- Don’t know **what to build** with the materials they already have
+- Get overwhelmed by long tutorials
+- Drop off mid-project and can’t resume easily
 
-- **Frontend**: Flutter (Dart)
-- **AI**: Google Gemini API
-- **API**: Custom backend (BASE_URL configurable)
-- **Build**: Flutter CLI
+**Idea Lens solves this by:**
+- Using AI to understand real-world objects
+- Generating **personalized DIY projects**
+- Guiding users with **clear, step-by-step instructions**
+- Allowing users to **exit and resume projects later**
 
-## 🚀 Quick Start
+---
 
-### 1. Clone & Install
+## 🧠 Core Idea (In One Line)
 
-```bash
-git clone https://github.com/UvanAdhithya/Idea-Lens.git
-cd Idea-Lens
+> **Scan → Get Ideas → Build Step-by-Step → Learn by Doing**
 
-##command to install dependencies
-flutter pub get
+---
 
+## ✨ Key Features
 
-##create .env file
-# Google Gemini API Key (get from https://aistudio.google.com/app/apikey)
-GEMINI_API_KEY=your_gemini_api_key_here
+### 📷 AI Material Scanning
+- Users scan items using their phone camera
+- AI detects materials (e.g., paper, bottles, cardboard)
+- Projects are generated based on detected items
 
-# Backend/API Base URL
-BASE_URL=http://localhost:3000
-# Production: BASE_URL=https://your-api-domain.com
+### 🧩 AI-Generated DIY Projects
+- 3 difficulty levels: Easy, Medium, Hard
+- Projects use **only scanned materials**
+- Each project has exactly **5 clear steps**
 
-##run command
-flutter run
+### ▶️ Step-by-Step Project Viewer
+- One step at a time (focused learning)
+- Large, touch-friendly navigation
+- Clear separation between step navigation and app navigation
+
+### 💾 Resume Later Support
+- Users can exit a project anytime
+- Progress is automatically saved
+- Home screen shows a **Resume Project** card
+
+### 🏠 Clean Mobile Dashboard
+- Scan CTA (primary action)
+- Active project card
+- Recommended projects
+- Skill & progress snapshot
+- Gamification summary
+
+### 🏆 Gamification
+- Points for completing steps and projects
+- Encourages consistency and learning
+- Designed to motivate without distracting
+
+---
+
+## 🏗️ App Structure (High Level)
 

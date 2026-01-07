@@ -1,16 +1,32 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 
 class GeminiVisionService {
   static String get apiKey => dotenv.env['API_KEY']!;
 
   static Future<Map<String, dynamic>> analyzeImage(File imageFile) async {
-    final bytes = await imageFile.readAsBytes();
+    Uint8List bytes = await imageFile.readAsBytes();
+    
+    // 🔥 Compression logic: If > 2MB, compress it.
     if (bytes.length > 2 * 1024 * 1024) {
-      return {'error': 'Image too large (>2MB)'};
+      final compressedBytes = await FlutterImageCompress.compressWithList(
+        bytes,
+        minWidth: 1600,
+        minHeight: 1600,
+        quality: 80,
+      );
+      
+      bytes = Uint8List.fromList(compressedBytes);
+      
+      // Still too large? Error out (safety check)
+      if (bytes.length > 2 * 1024 * 1024) {
+        return {'error': 'Image too large (>2MB) even after compression'};
+      }
     }
 
     final base64Image = base64Encode(bytes);

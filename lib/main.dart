@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      // ✅ ONLY HomeScreen is a named route
+      // ONLY HomeScreen is a named route
       routes: {
         '/': (context) => const HomeScreen(),
       },

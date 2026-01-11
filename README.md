@@ -129,10 +129,13 @@ flutter run
 ![Alt text](images/home_screen.jpeg)
 2. Tap **Scan**  
 3. Capture an image of nearby objects  
-![Alt text](images/analayze_page.jpeg)
+![Analyze](images/analayze_page.jpeg)
 4. View AI-generated project suggestions  
-6. Start a project  
+![Project](images/project_page.jpeg)
+5. Start a project  
+![Steps](images/project_step_page.jpeg)
 6. Exit mid-way  
+![Reward](images/reward.jpeg)
 7. Resume the project later from the Home screen  
 
 ---

@@ -125,13 +125,13 @@ flutter run
 
 ##  Demo Flow 
 
-1. Open the app  
-2. Tap **Scan**  
-3. Capture an image of nearby objects  
-4. View AI-generated project suggestions  
-5. Start a project  
-6. Exit mid-way  
-7. Resume the project later from the Home screen  
+1. Open the app ![Alt text](images/home_screen.jpeg)
+3. Tap **Scan**  
+4. Capture an image of nearby objects  
+5. View AI-generated project suggestions  
+6. Start a project  
+7. Exit mid-way  
+8. Resume the project later from the Home screen  
 
 ---
 
